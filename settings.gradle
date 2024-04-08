@@ -1,8 +1,21 @@
+buildscript {
+    repositories {
+        maven { url "https://packages.jetbrains.team/maven/p/academy/hyperskill-hspc" }
+		maven { url "https://jitpack.io" }
+    }
+
+    dependencies {
+        classpath "com.github.hyperskill:hs-gradle-plugin:release-SNAPSHOT"
+    }
+
+    configurations.all {
+        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+    }
+}
+
 static String sanitizeName(String name) {
     return name.replaceAll("[ /\\\\:<>\"?*|()]", "_").replaceAll("(^[.]+)|([.]+\$)", "")
 }
-
-rootProject.name = 'Cinema_Room_Manager'
 
 rootProject.projectDir.eachDirRecurse {
     if (!isTaskDir(it) || it.path.contains(".idea")) {
@@ -19,7 +32,7 @@ rootProject.projectDir.eachDirRecurse {
 }
 
 def isTaskDir(File dir) {
-    return new File(dir, "src").exists()
+    return new File(dir, "src").exists() || new File(dir, "test").exists()
 }
 
 include 'util'
